@@ -14,3 +14,4 @@ Run the following commands in the frontend directory:
 
 1. Clone the frontend repository with the following command:
    
+git<clone>  https://github.com/Bhuviofficial/FRONTEND--AUTHAPP
