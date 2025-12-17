@@ -1,18 +1,23 @@
-import axios from "axios";
+import API from "./api";
 
-const API = "http://localhost:5000/api/auth";
+export const registerUser = (data) => {
+  return API.post("/api/auth/register", data);
+};
 
-export const registerUser = (data) =>
-  axios.post(`${API}/register`, data);
+export const loginUser = (data) => {
+  return API.post("/api/auth/login", data);
+};
 
-export const loginUser = (data) =>
-  axios.post(`${API}/login`, data);
+/**
 
-export const forgotPassword = (data) =>
-  axios.post(`${API}/forgot-password`, data);
+ * @param {string} token
+ * @param {object} data
+ * @returns {Promise}
+ */
+export const forgotPassword = (email) => {
+  return API.post("/api/auth/forgot-password", { email });
+};
 
-export const verifyToken = (token) =>
-  axios.get(`${API}/reset-password/${token}`);
-
-export const resetPassword = (token, data) =>
-  axios.post(`${API}/reset-password/${token}`, data);
+export const resetPassword = (token, password) => {
+  return API.post(`/api/auth/reset-password/${token}`, { password });
+};

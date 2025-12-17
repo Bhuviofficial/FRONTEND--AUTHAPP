@@ -1,60 +1,52 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { loginUser } from "../services/authService";
 
-export default function Login() {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
 
-  const handleLogin = async () => {
-    setMessage("");
-    setError("");
-
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        { email, password }
-      );
-      setMessage(res.data.message);
+      const res = await loginUser({ email, password });
+      alert(res.data.message || "Login successful");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      alert(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
-    <div className="container">
-      <div className="card auth-card shadow p-4">
-        <h4>Login</h4>
+    <div className="container mt-5 col-md-4">
+      <h3 className="text-center mb-3">Login</h3>
 
-        {message && <div className="alert alert-success">{message}</div>}
-        {error && <div className="alert alert-danger">{error}</div>}
-
+      <form onSubmit={handleLogin}>
         <input
-          className="form-control mb-3"
+          className="form-control mb-2"
+          type="email"
           placeholder="Email"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
+          className="form-control mb-2"
           type="password"
-          className="form-control mb-3"
           placeholder="Password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
-        <button className="btn btn-success w-100" onClick={handleLogin}>
-          Login
-        </button>
+        <button className="btn btn-success w-100">Login</button>
+      </form>
 
-        <div className="text-center mt-3">
-          <Link to="/forgot-password">Forgot Password?</Link>
-        </div>
-        <div className="text-center mt-2">
-          <Link to="/register">Create Account</Link>
-        </div>
+      <div className="text-center mt-2">
+        <Link to="/forgot-password">Forgot Password?</Link>
       </div>
     </div>
   );
 }
+
+export default Login;
